@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hey Man! — Consultoria de Estilo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C8974A; --gold-light: #E8B86D; --gold-dim: rgba(200,151,74,0.15);
+    --bg: #0A0A0A; --bg2: #111111; --bg3: #1A1A1A;
+    --border: rgba(255,255,255,0.08); --text: #F0EDE8; --text-muted: #7A7672;
+    --text-dim: #4A4744; --danger: #C0392B; --success: #27AE60;
+    --radius: 4px; --transition: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); background-size: 256px; pointer-events: none; z-index: 0; opacity: 0.4; }
+  .bg-glow { position: fixed; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(200,151,74,0.06) 0%, transparent 70%); pointer-events: none; top: -200px; right: -200px; z-index: 0; }
+  .bg-glow-2 { position: fixed; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(200,151,74,0.04) 0%, transparent 70%); pointer-events: none; bottom: 0; left: -100px; z-index: 0; }
+  .wrapper { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 0 24px 80px; }
+  .site-header { padding: 48px 0 0; text-align: center; }
+  .logo-mark { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .logo-line { width: 32px; height: 1px; background: var(--gold); }
+  .logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 4px; color: var(--gold); }
+  .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 10vw, 80px); letter-spacing: 2px; line-height: 0.9; color: var(--text); margin-bottom: 16px; }
+  .hero-title em { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); font-size: 0.85em; letter-spacing: 0; }
+  .hero-sub { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 440px; margin: 0 auto 40px; font-weight: 300; }
+  .progress-wrap { margin-bottom: 48px; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .progress-label { font-size: 11px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; }
+  .progress-count { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; color: var(--gold); }
+  .progress-track { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 1px; transition: width 0.5s var(--transition); }
+  .step-dots { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all 0.3s var(--transition); cursor: pointer; }
+  .step-dot.active { background: var(--gold); transform: scale(1.3); }
+  .step-dot.done { background: var(--gold); opacity: 0.4; }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 40px; margin-bottom: 16px; position: relative; overflow: hidden; display: none; animation: slideIn 0.4s var(--transition); }
+  .card.active { display: block; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: linear-gradient(180deg, var(--gold), transparent); }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .step-badge { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--gold); margin-bottom: 6px; display: block; }
+  .card-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; color: var(--text); margin-bottom: 4px; }
+  .card-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.6; font-weight: 300; }
+  .field { margin-bottom: 24px; }
+  .field:last-child { margin-bottom: 0; }
+  label { display: block; font-size: 12px; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; font-weight: 500; }
+  label span.req { color: var(--gold); margin-left: 2px; }
+  input[type="text"], input[type="number"], input[type="email"], select, textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 300; padding: 14px 16px; outline: none; transition: border-color 0.2s, background 0.2s; appearance: none; }
+  input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, select:focus, textarea:focus { border-color: var(--gold); background: #1C1C1C; }
+  input::placeholder, textarea::placeholder { color: var(--text-dim); }
+  textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 500px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill-input { display: none; }
+  .pill-label { display: inline-block; padding: 9px 18px; background: var(--bg3); border: 1px solid var(--border); border-radius: 2px; font-size: 13px; font-weight: 400; color: var(--text-muted); cursor: pointer; transition: all 0.2s var(--transition); letter-spacing: 0.3px; user-select: none; }
+  .pill-input:checked + .pill-label { background: var(--gold-dim); border-color: var(--gold); color: var(--gold-light); }
+  .pill-label:hover { border-color: rgba(200,151,74,0.4); color: var(--text); }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+  .tile-input { display: none; }
+  .tile-label { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all 0.2s var(--transition); text-align: center; font-weight: 400; user-select: none; }
+  .tile-label .icon { font-size: 22px; }
+  .tile-input:checked + .tile-label { background: var(--gold-dim); border-color: var(--gold); color: var(--gold-light); }
+  .tile-label:hover { border-color: rgba(200,151,74,0.4); }
+  .scale-wrap { display: flex; gap: 8px; align-items: center; }
+  .scale-label-end { font-size: 11px; color: var(--text-dim); letter-spacing: 1px; min-width: 60px; }
+  .scale-label-end:last-child { text-align: right; }
+  .scale-items { display: flex; gap: 6px; flex: 1; justify-content: center; }
+  .scale-item-input { display: none; }
+  .scale-item-label { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--bg3); border: 1px solid var(--border); border-radius: 50%; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all 0.2s; font-weight: 500; user-select: none; }
+  .scale-item-input:checked + .scale-item-label { background: var(--gold); border-color: var(--gold); color: #0A0A0A; }
+  .scale-item-label:hover { border-color: var(--gold); color: var(--text); }
+  .divider { height: 1px; background: var(--border); margin: 28px 0; }
+  .fill-blank-wrap { display: flex; align-items: center; gap: 8px; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); font-size: 15px; color: var(--text-muted); transition: border-color 0.2s; }
+  .fill-blank-wrap:focus-within { border-color: var(--gold); background: #1C1C1C; }
+  .fill-blank-prefix { white-space: nowrap; color: var(--text-muted); font-style: italic; }
+  .fill-blank-input { flex: 1; background: transparent; border: none; padding: 0; font-size: 15px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; }
+  .fill-blank-input::placeholder { color: var(--text-dim); }
+  .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s var(--transition); border: none; outline: none; }
+  .btn-primary { background: var(--gold); color: #0A0A0A; }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,151,74,0.25); }
+  .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-icon { font-size: 16px; }
+  .btn-submit { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%); color: #0A0A0A; padding: 16px 40px; font-size: 14px; letter-spacing: 2px; width: 100%; justify-content: center; border-radius: 2px; }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(200,151,74,0.3); }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .hint { font-size: 12px; color: var(--text-dim); margin-top: 8px; font-style: italic; }
+  .success-screen { display: none; text-align: center; padding: 80px 40px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; animation: slideIn 0.5s var(--transition); }
+  .success-screen.active { display: block; }
+  .success-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--gold-dim); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 24px; }
+  .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; color: var(--text); margin-bottom: 8px; }
+  .success-title em { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); letter-spacing: 0; }
+  .success-desc { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 380px; margin: 0 auto; font-weight: 300; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag-input { display: none; }
+  .tag-label { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: 2px; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all 0.2s; user-select: none; }
+  .tag-input:checked + .tag-label { background: var(--gold-dim); border-color: var(--gold); color: var(--gold-light); }
+  .tag-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--text-dim); transition: background 0.2s; }
+  .tag-input:checked + .tag-label::before { background: var(--gold); }
+  .tag-label:hover { border-color: rgba(200,151,74,0.4); color: var(--text); }
+  .inline-note { background: var(--gold-dim); border-left: 3px solid var(--gold); padding: 12px 16px; border-radius: 0 4px 4px 0; font-size: 13px; color: var(--gold-light); margin-bottom: 24px; line-height: 1.5; }
+  .big-num { font-family: 'Bebas Neue', sans-serif; font-size: 120px; color: rgba(200,151,74,0.05); position: absolute; top: -20px; right: 20px; line-height: 1; pointer-events: none; user-select: none; }
+  @media (max-width: 600px) { .card { padding: 28px 20px; } .btn-row { flex-direction: column-reverse; } .btn { width: 100%; justify-content: center; } }
+  .sending-overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.85); z-index: 999; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+  .sending-overlay.active { display: flex; }
+  .sending-spinner { width: 48px; height: 48px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .sending-text { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<!-- SENDING OVERLAY -->
+<div class="sending-overlay" id="sendingOverlay">
+  <div class="sending-spinner"></div>
+  <div class="sending-text">Enviando sua consultoria...</div>
+</div>
+
+<div class="wrapper">
+  <header class="site-header">
+    <div class="logo-mark">
+      <span class="logo-line"></span>
+      <span class="logo-text">Hey Man!</span>
+      <span class="logo-line"></span>
+    </div>
+    <h1 class="hero-title">Consultoria<br>de <em>Estilo</em></h1>
+    <p class="hero-sub">Antes da sua consultoria, precisamos entender quem você é e onde quer chegar. Responda com sinceridade — isso vai fazer toda a diferença.</p>
+  </header>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-top">
+      <span class="progress-label">Seu Progresso</span>
+      <span class="progress-count" id="progressCount">01 / 12</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 8.33%"></div>
+    </div>
+    <div class="step-dots" id="stepDots"></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="card active" data-step="1">
+    <span class="big-num">01</span>
+    <span class="step-badge">PASSO 01 / 12</span>
+    <h2 class="card-title">Informações Básicas</h2>
+    <p class="card-desc">Vamos começar com o básico para personalizar sua consultoria.</p>
+    <div class="grid-2">
+      <div class="field"><label>Nome <span class="req">*</span></label><input type="text" placeholder="Seu nome" id="nome"></div>
+      <div class="field"><label>Idade <span class="req">*</span></label><input type="number" placeholder="Ex: 28" id="idade" min="16" max="80"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Profissão</label><input type="text" placeholder="O que você faz?" id="profissao"></div>
+      <div class="field"><label>Cidade</label><input type="text" placeholder="Sua cidade" id="cidade"></div>
+    </div>
+    <div class="field"><label>Altura</label><input type="text" placeholder="Ex: 1,75m" id="altura"></div>
+    <div class="field">
+      <label>Como você descreveria seu tipo físico?</label>
+      <div class="tiles">
+        <input type="radio" name="tipo_fisico" id="tf1" value="magro" class="tile-input"><label for="tf1" class="tile-label"><span class="icon">🏃</span>Magro</label>
+        <input type="radio" name="tipo_fisico" id="tf2" value="atletico" class="tile-input"><label for="tf2" class="tile-label"><span class="icon">💪</span>Atlético</label>
+        <input type="radio" name="tipo_fisico" id="tf3" value="medio" class="tile-input"><label for="tf3" class="tile-label"><span class="icon">👤</span>Médio</label>
+        <input type="radio" name="tipo_fisico" id="tf4" value="acima" class="tile-input"><label for="tf4" class="tile-label"><span class="icon">🪨</span>Acima do peso</label>
+      </div>
+    </div>
+    <div class="btn-row"><span></span><button class="btn btn-primary" onclick="nextStep(1)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="card" data-step="2">
+    <span class="big-num">02</span>
+    <span class="step-badge">PASSO 02 / 12</span>
+    <h2 class="card-title">Sua Relação com Roupas</h2>
+    <p class="card-desc">Sem julgamentos — apenas honestidade total.</p>
+    <div class="field">
+      <label>Você gosta de se vestir bem?</label>
+      <div class="pills">
+        <input type="radio" name="gosta_vestir" id="gv1" value="muito" class="pill-input"><label for="gv1" class="pill-label">Muito</label>
+        <input type="radio" name="gosta_vestir" id="gv2" value="mais_ou_menos" class="pill-input"><label for="gv2" class="pill-label">Mais ou menos</label>
+        <input type="radio" name="gosta_vestir" id="gv3" value="nunca_pensei" class="pill-input"><label for="gv3" class="pill-label">Nunca parei pra pensar nisso</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>Hoje, como você descreveria sua relação com roupas?</label>
+      <div class="pills" style="flex-direction: column; align-items: flex-start;">
+        <input type="radio" name="relacao" id="r1" value="gosto" class="pill-input"><label for="r1" class="pill-label">Gosto de me vestir bem</label>
+        <input type="radio" name="relacao" id="r2" value="tento" class="pill-input"><label for="r2" class="pill-label">Tento me vestir bem, mas não sei como</label>
+        <input type="radio" name="relacao" id="r3" value="qualquer" class="pill-input"><label for="r3" class="pill-label">Uso qualquer coisa</label>
+        <input type="radio" name="relacao" id="r4" value="nunca_pensei_r" class="pill-input"><label for="r4" class="pill-label">Nunca pensei muito nisso</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>Você costuma planejar o que vai vestir?</label>
+      <div class="pills">
+        <input type="radio" name="planeja" id="p1" value="planejo" class="pill-input"><label for="p1" class="pill-label">Planejo</label>
+        <input type="radio" name="planeja" id="p2" value="as_vezes" class="pill-input"><label for="p2" class="pill-label">Às vezes penso</label>
+        <input type="radio" name="planeja" id="p3" value="qualquer_coisa" class="pill-input"><label for="p3" class="pill-label">Pego qualquer coisa</label>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(2)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(2)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="card" data-step="3">
+    <span class="big-num">03</span>
+    <span class="step-badge">PASSO 03 / 12</span>
+    <h2 class="card-title">O Que Você Costuma Usar</h2>
+    <p class="card-desc">Marque todas as opções que fazem parte do seu dia a dia.</p>
+    <div class="field">
+      <label>Quais roupas você mais usa? <span class="hint" style="display:inline">(pode marcar mais de uma)</span></label>
+      <div class="tags">
+        <input type="checkbox" name="roupas" id="ro1" value="camisa_time" class="tag-input"><label for="ro1" class="tag-label">Camisa de time</label>
+        <input type="checkbox" name="roupas" id="ro2" value="camiseta_basica" class="tag-input"><label for="ro2" class="tag-label">Camiseta básica</label>
+        <input type="checkbox" name="roupas" id="ro3" value="camiseta_estampada" class="tag-input"><label for="ro3" class="tag-label">Camiseta estampada</label>
+        <input type="checkbox" name="roupas" id="ro4" value="polo" class="tag-input"><label for="ro4" class="tag-label">Polo</label>
+        <input type="checkbox" name="roupas" id="ro5" value="camisa_social" class="tag-input"><label for="ro5" class="tag-label">Camisa social</label>
+        <input type="checkbox" name="roupas" id="ro6" value="moletom" class="tag-input"><label for="ro6" class="tag-label">Moletom</label>
+        <input type="checkbox" name="roupas" id="ro7" value="jaqueta" class="tag-input"><label for="ro7" class="tag-label">Jaqueta</label>
+        <input type="checkbox" name="roupas" id="ro8" value="regata" class="tag-input"><label for="ro8" class="tag-label">Regata</label>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="field">
+      <label>Complete a frase</label>
+      <div class="fill-blank-wrap">
+        <span class="fill-blank-prefix">"Hoje eu praticamente só uso</span>
+        <input type="text" class="fill-blank-input" placeholder="sua resposta..." id="frase_completa">
+        <span class="fill-blank-prefix">"</span>
+      </div>
+    </div>
+    <div class="field"><label>Existe alguma roupa que você usa muito, mas gostaria de parar?</label><input type="text" placeholder="Qual peça?" id="parar_usar"></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(3)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(3)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="card" data-step="4">
+    <span class="big-num">04</span>
+    <span class="step-badge">PASSO 04 / 12</span>
+    <h2 class="card-title">Seu Estilo Hoje</h2>
+    <p class="card-desc">Olha pro espelho sem filtro. Como você se vê hoje?</p>
+    <div class="field">
+      <label>Se você tivesse que definir seu estilo atual, qual seria?</label>
+      <div class="tiles">
+        <input type="radio" name="estilo_atual" id="ea1" value="basico" class="tile-input"><label for="ea1" class="tile-label"><span class="icon">👕</span>Básico</label>
+        <input type="radio" name="estilo_atual" id="ea2" value="esportivo" class="tile-input"><label for="ea2" class="tile-label"><span class="icon">⚡</span>Esportivo</label>
+        <input type="radio" name="estilo_atual" id="ea3" value="casual" class="tile-input"><label for="ea3" class="tile-label"><span class="icon">😎</span>Casual</label>
+        <input type="radio" name="estilo_atual" id="ea4" value="social" class="tile-input"><label for="ea4" class="tile-label"><span class="icon">💼</span>Social</label>
+        <input type="radio" name="estilo_atual" id="ea5" value="desleixado" class="tile-input"><label for="ea5" class="tile-label"><span class="icon">😅</span>Desleixado</label>
+        <input type="radio" name="estilo_atual" id="ea6" value="nao_sei" class="tile-input"><label for="ea6" class="tile-label"><span class="icon">🤷</span>Não sei dizer</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>Suas roupas representam bem quem você é?</label>
+      <div class="pills">
+        <input type="radio" name="representa" id="rep1" value="sim" class="pill-input"><label for="rep1" class="pill-label">Sim</label>
+        <input type="radio" name="representa" id="rep2" value="mais_ou_menos" class="pill-input"><label for="rep2" class="pill-label">Mais ou menos</label>
+        <input type="radio" name="representa" id="rep3" value="nao" class="pill-input"><label for="rep3" class="pill-label">Não</label>
+      </div>
+    </div>
+    <div class="field"><label>Por quê?</label><textarea placeholder="Me conta mais sobre isso..." id="representa_pq"></textarea></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(4)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(4)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="card" data-step="5">
+    <span class="big-num">05</span>
+    <span class="step-badge">PASSO 05 / 12</span>
+    <h2 class="card-title">Dificuldades ao se Vestir</h2>
+    <p class="card-desc">Todo mundo tem. A diferença é quem enfrenta.</p>
+    <div class="field">
+      <label>O que você acha mais difícil na hora de se vestir?</label>
+      <div class="tags">
+        <input type="checkbox" name="dificuldades" id="dif1" value="combinar" class="tag-input"><label for="dif1" class="tag-label">Combinar roupas</label>
+        <input type="checkbox" name="dificuldades" id="dif2" value="escolher" class="tag-input"><label for="dif2" class="tag-label">Escolher peças</label>
+        <input type="checkbox" name="dificuldades" id="dif3" value="fica_bem" class="tag-input"><label for="dif3" class="tag-label">Saber o que fica bem em mim</label>
+        <input type="checkbox" name="dificuldades" id="dif4" value="ocasioes" class="tag-input"><label for="dif4" class="tag-label">Saber o que usar em cada ocasião</label>
+      </div>
+    </div>
+    <div class="field"><label>Você já se sentiu mal vestido em alguma situação?</label><textarea placeholder="Conta um pouco essa história..." id="mal_vestido"></textarea><p class="hint">Esse momento costuma ser o gatilho da transformação. 💡</p></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(5)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(5)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="card" data-step="6">
+    <span class="big-num">06</span>
+    <span class="step-badge">PASSO 06 / 12</span>
+    <h2 class="card-title">Inseguranças com a Aparência</h2>
+    <p class="card-desc">Vamos resolver isso juntos. Sem julgamento.</p>
+    <div class="inline-note">Essa pergunta é importante para que possamos indicar as peças certas para valorizar sua imagem.</div>
+    <div class="field">
+      <label>Existe algo no seu corpo que te incomoda ao se vestir?</label>
+      <div class="tags">
+        <input type="checkbox" name="inseguranças" id="ins1" value="altura" class="tag-input"><label for="ins1" class="tag-label">Altura</label>
+        <input type="checkbox" name="inseguranças" id="ins2" value="barriga" class="tag-input"><label for="ins2" class="tag-label">Barriga</label>
+        <input type="checkbox" name="inseguranças" id="ins3" value="ombros" class="tag-input"><label for="ins3" class="tag-label">Ombros</label>
+        <input type="checkbox" name="inseguranças" id="ins4" value="peso" class="tag-input"><label for="ins4" class="tag-label">Peso</label>
+        <input type="checkbox" name="inseguranças" id="ins5" value="postura" class="tag-input"><label for="ins5" class="tag-label">Postura</label>
+        <input type="checkbox" name="inseguranças" id="ins6" value="nenhum" class="tag-input"><label for="ins6" class="tag-label">Nenhum</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>Isso influencia na forma como você se veste?</label>
+      <div class="pills">
+        <input type="radio" name="influencia" id="inf1" value="muito" class="pill-input"><label for="inf1" class="pill-label">Muito</label>
+        <input type="radio" name="influencia" id="inf2" value="as_vezes" class="pill-input"><label for="inf2" class="pill-label">Às vezes</label>
+        <input type="radio" name="influencia" id="inf3" value="pouco" class="pill-input"><label for="inf3" class="pill-label">Pouco</label>
+        <input type="radio" name="influencia" id="inf4" value="nao" class="pill-input"><label for="inf4" class="pill-label">Não</label>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(6)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(6)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="card" data-step="7">
+    <span class="big-num">07</span>
+    <span class="step-badge">PASSO 07 / 12</span>
+    <h2 class="card-title">Imagem que Você Quer Transmitir</h2>
+    <p class="card-desc">Agora o mais importante: onde você quer chegar.</p>
+    <div class="field">
+      <label>Como você gostaria de ser percebido pelas pessoas?</label>
+      <div class="tags">
+        <input type="checkbox" name="desejo_imagem" id="di1" value="elegante" class="tag-input"><label for="di1" class="tag-label">Mais elegante</label>
+        <input type="checkbox" name="desejo_imagem" id="di2" value="confiante" class="tag-input"><label for="di2" class="tag-label">Mais confiante</label>
+        <input type="checkbox" name="desejo_imagem" id="di3" value="estiloso" class="tag-input"><label for="di3" class="tag-label">Mais estiloso</label>
+        <input type="checkbox" name="desejo_imagem" id="di4" value="profissional" class="tag-input"><label for="di4" class="tag-label">Mais profissional</label>
+        <input type="checkbox" name="desejo_imagem" id="di5" value="masculino" class="tag-input"><label for="di5" class="tag-label">Mais masculino</label>
+        <input type="checkbox" name="desejo_imagem" id="di6" value="atraente" class="tag-input"><label for="di6" class="tag-label">Mais atraente</label>
+      </div>
+    </div>
+    <div class="field"><label>Quando alguém olha pra você, o que você gostaria que essa pessoa pensasse?</label><textarea placeholder="Descreva essa imagem ideal..." id="imagem_ideal"></textarea></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(7)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(7)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="card" data-step="8">
+    <span class="big-num">08</span>
+    <span class="step-badge">PASSO 08 / 12</span>
+    <h2 class="card-title">Seu Ambiente Social</h2>
+    <p class="card-desc">Contexto é tudo na hora de criar um look.</p>
+    <div class="field">
+      <label>Onde você mais usa suas roupas? <span class="hint" style="display:inline">(pode marcar mais de uma)</span></label>
+      <div class="tags">
+        <input type="checkbox" name="ambiente" id="amb1" value="trabalho" class="tag-input"><label for="amb1" class="tag-label">Trabalho</label>
+        <input type="checkbox" name="ambiente" id="amb2" value="faculdade" class="tag-input"><label for="amb2" class="tag-label">Faculdade</label>
+        <input type="checkbox" name="ambiente" id="amb3" value="igreja" class="tag-input"><label for="amb3" class="tag-label">Igreja</label>
+        <input type="checkbox" name="ambiente" id="amb4" value="encontros" class="tag-input"><label for="amb4" class="tag-label">Encontros</label>
+        <input type="checkbox" name="ambiente" id="amb5" value="amigos" class="tag-input"><label for="amb5" class="tag-label">Sair com amigos</label>
+        <input type="checkbox" name="ambiente" id="amb6" value="eventos" class="tag-input"><label for="amb6" class="tag-label">Eventos</label>
+      </div>
+    </div>
+    <div class="field"><label>Seu trabalho exige algum estilo específico?</label><input type="text" placeholder="Ex: uniforme, social, casual..." id="estilo_trabalho"></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(8)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(8)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 9 -->
+  <div class="card" data-step="9">
+    <span class="big-num">09</span>
+    <span class="step-badge">PASSO 09 / 12</span>
+    <h2 class="card-title">Referências de Estilo</h2>
+    <p class="card-desc">Quem te inspira? Toda transformação começa com uma referência.</p>
+    <div class="field"><label>Existe alguém cujo estilo você admira?</label><input type="text" placeholder="Nome do ator, atleta, influenciador, amigo..." id="referencia_nome"><p class="hint">Pode ser qualquer pessoa — famoso, colega de trabalho, alguém que você vê na rua.</p></div>
+    <div class="field"><label>O que você mais gosta no estilo dessa pessoa?</label><textarea placeholder="Me conta o que chama sua atenção..." id="referencia_motivo"></textarea></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(9)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(9)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 10 -->
+  <div class="card" data-step="10">
+    <span class="big-num">10</span>
+    <span class="step-badge">PASSO 10 / 12</span>
+    <h2 class="card-title">Hábitos de Compra</h2>
+    <p class="card-desc">Entender como você compra nos ajuda a fazer escolhas melhores por você.</p>
+    <div class="field">
+      <label>Com que frequência você compra roupas?</label>
+      <div class="pills" style="flex-direction: column; align-items: flex-start;">
+        <input type="radio" name="frequencia_compra" id="fc1" value="quase_nunca" class="pill-input"><label for="fc1" class="pill-label">Quase nunca</label>
+        <input type="radio" name="frequencia_compra" id="fc2" value="1_2_ano" class="pill-input"><label for="fc2" class="pill-label">1 ou 2 vezes por ano</label>
+        <input type="radio" name="frequencia_compra" id="fc3" value="algumas_vezes" class="pill-input"><label for="fc3" class="pill-label">Algumas vezes no ano</label>
+        <input type="radio" name="frequencia_compra" id="fc4" value="frequentemente" class="pill-input"><label for="fc4" class="pill-label">Frequentemente</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>O que você mais considera ao comprar roupa?</label>
+      <div class="tags">
+        <input type="checkbox" name="criterio_compra" id="cc1" value="preco" class="tag-input"><label for="cc1" class="tag-label">Preço</label>
+        <input type="checkbox" name="criterio_compra" id="cc2" value="conforto" class="tag-input"><label for="cc2" class="tag-label">Conforto</label>
+        <input type="checkbox" name="criterio_compra" id="cc3" value="estilo" class="tag-input"><label for="cc3" class="tag-label">Estilo</label>
+        <input type="checkbox" name="criterio_compra" id="cc4" value="marca" class="tag-input"><label for="cc4" class="tag-label">Marca</label>
+        <input type="checkbox" name="criterio_compra" id="cc5" value="qualidade" class="tag-input"><label for="cc5" class="tag-label">Qualidade</label>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(10)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(10)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 11 -->
+  <div class="card" data-step="11">
+    <span class="big-num">11</span>
+    <span class="step-badge">PASSO 11 / 12</span>
+    <h2 class="card-title">Expectativa com a Consultoria</h2>
+    <p class="card-desc">Estamos quase lá. O que você espera dessa experiência?</p>
+    <div class="field"><label>O que você espera mudar na forma como se veste?</label><textarea placeholder="Seja específico — quanto mais você contar, melhor vamos te ajudar." id="expectativa_mudanca"></textarea></div>
+    <div class="field"><label>Como você gostaria de se sentir depois dessa transformação?</label><textarea placeholder="Imagine a versão de você que quer se tornar..." id="expectativa_sentir"></textarea></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="prevStep(11)"><span class="btn-icon">←</span> Voltar</button><button class="btn btn-primary" onclick="nextStep(11)">Continuar <span class="btn-icon">→</span></button></div>
+  </div>
+
+  <!-- STEP 12 -->
+  <div class="card" data-step="12">
+    <span class="big-num">12</span>
+    <span class="step-badge">PASSO 12 / 12</span>
+    <h2 class="card-title">Sua História para o Vídeo</h2>
+    <p class="card-desc">Essa parte é especial. Pode ser que a sua história inspire muita gente.</p>
+    <div class="inline-note">✨ Histórias reais de transformação são o coração da Hey Man. Responda com sinceridade — isso pode virar um vídeo poderoso.</div>
+    <div class="field">
+      <label>Qual frase resume melhor seu problema com roupas hoje?</label>
+      <div class="fill-blank-wrap">
+        <span class="fill-blank-prefix">"</span>
+        <input type="text" class="fill-blank-input" placeholder="Ex: Eu só usava camisa de time..." id="frase_problema">
+        <span class="fill-blank-prefix">"</span>
+      </div>
+      <p class="hint">Essa frase abre o vídeo. Seja direto e real.</p>
+    </div>
+    <div class="field"><label>Se pudesse mudar uma coisa no seu estilo hoje, qual seria?</label><input type="text" placeholder="Uma mudança específica..." id="mudanca_estilo"></div>
+    <div class="field"><label>O que você espera sentir quando se olhar no espelho depois da transformação?</label><textarea placeholder="Descreve essa sensação..." id="sentir_depois"></textarea></div>
+    <div class="field">
+      <label>Você toparia contar sua história em um vídeo de transformação?</label>
+      <div class="tiles">
+        <input type="radio" name="topa_video" id="tv1" value="sim" class="tile-input"><label for="tv1" class="tile-label"><span class="icon">🎬</span>Sim, topo!</label>
+        <input type="radio" name="topa_video" id="tv2" value="talvez" class="tile-input"><label for="tv2" class="tile-label"><span class="icon">🤔</span>Talvez</label>
+        <input type="radio" name="topa_video" id="tv3" value="nao" class="tile-input"><label for="tv3" class="tile-label"><span class="icon">🙈</span>Prefiro não aparecer</label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="prevStep(12)"><span class="btn-icon">←</span> Voltar</button>
+      <button class="btn btn-submit" id="btnSubmit" onclick="submitForm()">Enviar Consultoria <span class="btn-icon">✓</span></button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2 class="success-title">Recebido,<br><em>Man!</em></h2>
+    <p class="success-desc">Suas respostas chegaram até nós.<br>Nossa equipe vai analisar seu perfil e entrar em contato em breve com sua consultoria personalizada.<br><br>Prepara que a transformação vem aí. 🔥</p>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // CONFIGURAÇÃO — SUBSTITUA COM A URL DO SEU WEBHOOK N8N
+  // ============================================================
+  const WEBHOOK_URL = 'https://teusa007.app.n8n.cloud/webhook/heyman-consultoria';
+  // ============================================================
+
+  const TOTAL_STEPS = 12;
+  let currentStep = 1;
+
+  const dotsContainer = document.getElementById('stepDots');
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === 1 ? ' active' : '');
+    dot.dataset.step = i;
+    dot.onclick = () => goToStep(i);
+    dotsContainer.appendChild(dot);
+  }
+
+  function updateProgress(step) {
+    const pct = (step / TOTAL_STEPS) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent =
+      String(step).padStart(2, '0') + ' / ' + String(TOTAL_STEPS).padStart(2, '0');
+    document.querySelectorAll('.step-dot').forEach((d, i) => {
+      d.classList.remove('active', 'done');
+      if (i + 1 === step) d.classList.add('active');
+      else if (i + 1 < step) d.classList.add('done');
+    });
+  }
+
+  function showStep(step) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+    const target = document.querySelector(`.card[data-step="${step}"]`);
+    if (target) target.classList.add('active');
+    updateProgress(step);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextStep(from) {
+    if (currentStep < TOTAL_STEPS) { currentStep++; showStep(currentStep); }
+  }
+  function prevStep(from) {
+    if (currentStep > 1) { currentStep--; showStep(currentStep); }
+  }
+  function goToStep(step) {
+    if (step <= currentStep) { currentStep = step; showStep(currentStep); }
+  }
+
+  function getChecked(name) {
+    return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
+      .map(el => el.value).join(', ');
+  }
+  function getRadio(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '';
+  }
+
+  async function submitForm() {
+    const btn = document.getElementById('btnSubmit');
+    const overlay = document.getElementById('sendingOverlay');
+
+    btn.disabled = true;
+    overlay.classList.add('active');
+
+    const payload = {
+      // META
+      timestamp: new Date().toISOString(),
+      // STEP 1
+      nome: document.getElementById('nome').value.trim(),
+      idade: document.getElementById('idade').value.trim(),
+      profissao: document.getElementById('profissao').value.trim(),
+      cidade: document.getElementById('cidade').value.trim(),
+      altura: document.getElementById('altura').value.trim(),
+      tipo_fisico: getRadio('tipo_fisico'),
+      // STEP 2
+      gosta_vestir: getRadio('gosta_vestir'),
+      relacao_roupas: getRadio('relacao'),
+      planeja_vestir: getRadio('planeja'),
+      // STEP 3
+      roupas_usadas: getChecked('roupas'),
+      frase_completa: document.getElementById('frase_completa').value.trim(),
+      parar_usar: document.getElementById('parar_usar').value.trim(),
+      // STEP 4
+      estilo_atual: getRadio('estilo_atual'),
+      roupas_representam: getRadio('representa'),
+      representa_pq: document.getElementById('representa_pq').value.trim(),
+      // STEP 5
+      dificuldades: getChecked('dificuldades'),
+      mal_vestido: document.getElementById('mal_vestido').value.trim(),
+      // STEP 6
+      insegurancas: getChecked('inseguranças'),
+      inseguranca_influencia: getRadio('influencia'),
+      // STEP 7
+      desejo_imagem: getChecked('desejo_imagem'),
+      imagem_ideal: document.getElementById('imagem_ideal').value.trim(),
+      // STEP 8
+      ambientes: getChecked('ambiente'),
+      estilo_trabalho: document.getElementById('estilo_trabalho').value.trim(),
+      // STEP 9
+      referencia_nome: document.getElementById('referencia_nome').value.trim(),
+      referencia_motivo: document.getElementById('referencia_motivo').value.trim(),
+      // STEP 10
+      frequencia_compra: getRadio('frequencia_compra'),
+      criterio_compra: getChecked('criterio_compra'),
+      // STEP 11
+      expectativa_mudanca: document.getElementById('expectativa_mudanca').value.trim(),
+      expectativa_sentir: document.getElementById('expectativa_sentir').value.trim(),
+      // STEP 12
+      frase_problema: document.getElementById('frase_problema').value.trim(),
+      mudanca_estilo: document.getElementById('mudanca_estilo').value.trim(),
+      sentir_depois: document.getElementById('sentir_depois').value.trim(),
+      topa_video: getRadio('topa_video')
+    };
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      console.error('Erro ao enviar:', e);
+    } finally {
+      overlay.classList.remove('active');
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+      document.getElementById('progressWrap').style.display = 'none';
+      document.getElementById('successScreen').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  updateProgress(1);
+</script>
+</body>
+</html>
